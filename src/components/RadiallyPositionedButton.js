@@ -1,8 +1,14 @@
-import React, {useState, useRef, createRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import Classes from 'classnames'
 import Style from './styles/RadiallyPositionedButton.module.scss'
 
 import {TweenMax} from 'gsap'
+
+import {
+    Transition,
+    TransitionGroup,
+    CSSTransition
+} from 'react-transition-group';
 
 export function ButtonGroup({className, primary, children, duration, delay}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
@@ -21,48 +27,70 @@ export function ButtonGroup({className, primary, children, duration, delay}){
                 {primary.content}
             </button>
 
+            <TransitionGroup component={null}>
+                {React.Children.map(children, (child,i)=> // pass props
+                    React.cloneElement(child, {
+                        visible: primaryStatus,
+                        duration: ( duration || undefined ),
+                        delay: ( delay || undefined ),
+                        indexes: [ i, children.length-i-1 ],
+                    })
+                )}
+            </TransitionGroup>
 
-            {
-            (primaryStatus)
-            ? React.Children.map(children, (child,i)=>
-                React.cloneElement(child, {
-                    duration: ( duration || undefined ),
-                    delay: ( delay || undefined ),
-                    indexes: [ i, children.length-i-1 ]
-                })
-            )
-            :false
-            }
-
-            {(primaryStatus)
-            ? <div className={Style.Overlay}></div>
-            :false
-            }
+            <CSSTransition
+                in={primaryStatus}
+                classNames={{
+                    enterActive:Style.enterActive,
+                    enterDone:Style.enterDone,
+                    exitDone:Style.exitDone,
+                    exit:Style.exitActive
+                }}
+                timeout={500}
+                mountOnEnter
+                unmountOnExit
+            >
+                <div className={Style.Overlay}></div>
+            </CSSTransition>
         </div>
     )
 } 
 
-export const Secondary = ({indexes, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
+export const Secondary = ({indexes, visible, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
     
     const radians = angle * Math.PI/180
-    const self = useRef(null)
-    useEffect(()=>{
-        // On Mount
-            console.log(self)
-            TweenMax.to(self.current, duration, {
-                x:(distance * Math.cos(radians)),
-                y:(distance * Math.sin(radians)),
-                 delay:indexes[0]*delay
-            })
 
-        // On Dismount
-        return ()=>{
-            console.log("UNMOUNT")
+    const aOnEnter = (el)=>{
+        TweenMax.to(el, duration, {
+            x:(distance * Math.cos(radians)),
+            y:(distance * Math.sin(radians)),
+             delay: indexes[0] * delay
+        })
+    }
 
-        }
-    },[distance,duration,radians,indexes,self.current])
-    
+    const aOnExit = (el)=>{
+        TweenMax.to(el, duration, {
+            x:0,
+            y:0,
+             delay: indexes[0] * delay
+        })
+
+    }
+
     return (
-        <button ref={self} className={Classes(Style.Secondary, className)}>{children}</button>
+        <Transition 
+            key={indexes[0]}
+            in={visible}
+            onEnter={aOnEnter}
+            onExit={aOnExit}
+            timeout={{
+                enter:((duration + indexes[0] * delay) * 1000), 
+                exit:((duration + .2 + indexes[1] * delay) * 1000) // add 200ms to wait for animation to end
+            }}
+            mountOnEnter
+            unmountOnExit
+        >
+            <button className={Classes(Style.Secondary, className)}>{children}</button>
+        </Transition>
     )
 }

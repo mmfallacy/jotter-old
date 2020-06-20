@@ -6,6 +6,9 @@ import {ReactComponent as Add} from './assets/Jot/add.svg'
 
 import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
+import {TaskContainer, Task} from './Task';
+
+
 export default function Jot(){
     return(
         <div className={Style.Jot}>
@@ -39,6 +42,15 @@ export default function Jot(){
                     </Secondary>
                 </ButtonGroup>
             </div>
+
+            
+            <TaskContainer>
+                <Task />
+                <Task />
+                <Task />
+                <Task />
+                <Task />
+            </TaskContainer>
         </div>
     )
 }
