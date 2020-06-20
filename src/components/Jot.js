@@ -45,11 +45,7 @@ export default function Jot(){
 
             
             <TaskContainer>
-                <Task />
-                <Task />
-                <Task />
-                <Task />
-                <Task />
+                <TimelyTask />
             </TaskContainer>
         </div>
     )
