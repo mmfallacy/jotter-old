@@ -62,8 +62,8 @@ function Checkbox({stateLink=()=>{},onCheck=()=>{}}){
 
     const onClickWrapper = ()=>{
         onCheck();
-        stateLink(!tickStatus)
-        toggleTick(!tickStatus) 
+        stateLink(state=>!state)
+        toggleTick(state=>!state) 
     }
 
     return(

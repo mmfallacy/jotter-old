@@ -14,7 +14,7 @@ export function ButtonGroup({className, primary, children, duration, delay}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
     
     const onPrimaryClick = ()=>{
-        togglePrimaryStatus(!primaryStatus)
+        togglePrimaryStatus(state=>!state)
     }
 
     return(

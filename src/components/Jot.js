@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import Style from './styles/Jot.module.scss'
 
@@ -8,6 +8,11 @@ import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
 import {TaskContainer, TimelyTask} from './Task';
 
+import moment from "moment";
+
+import useInterval from '@use-it/interval'
+
+import {DATE_TEXT} from '../variables'
 
 export default function Jot(){
 
@@ -17,15 +22,35 @@ export default function Jot(){
         {type:"note", title:"Sample Note", time:"2:30 AM"}
     ])
 
+    const [currentMonth, setMonth] = useState(moment().month())
+    const [currentWeekday, setWeekday] = useState(moment().day())
+    const [currentDay, setDay] = useState(moment().date())
 
+
+    useInterval(()=>{
+        let now = moment()
+        setMonth(now.month())
+        setWeekday(now.day())
+        setDay(now.date())
+
+    },1000)
+
+
+    useEffect(()=>{
+        console.log("RENDER")
+    })
     return(
         <div className={Style.Jot}>
             <div className={Style.Header}>
                 <div className={Style.Row}>
-                    <h4 className={Style.Weekday}>Monday</h4> &nbsp;&nbsp; 
-                    <h4 className={Style.Day}>14th</h4>
+                    <h4 className={Style.Weekday}>
+                        {DATE_TEXT.WEEKDAYS[currentWeekday]}
+                    </h4> &nbsp;&nbsp; 
+                    <h4 className={Style.Day}>
+                        {DATE_TEXT.ORDINAL_DAYS(currentDay)}
+                    </h4>
                 </div>
-                <h6>June</h6>
+                <h6>{DATE_TEXT.MONTHS[currentMonth]}</h6>
 
                 
                 <ButtonGroup className={Style.ButtonGroup} 
