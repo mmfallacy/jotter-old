@@ -6,9 +6,6 @@ import {ReactComponent as Add} from './assets/Jot/add.svg'
 
 import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
-import {TaskContainer, Task} from './Task';
-
-
 export default function Jot(){
     return(
         <div className={Style.Jot}>
@@ -26,31 +23,18 @@ export default function Jot(){
                         content:
                             <Add />
                     }}
-                    duration={.2}
-                    delay={.15}
                 >
-                    <Secondary className={Style.Secondary} angle={80} distance={50}>
+                    <Secondary className={Style.Secondary} angle={190} distance="50px">
                         <Add />
                     </Secondary>
-                    
-                    <Secondary className={Style.Secondary} angle={135} distance={50}>
+                    <Secondary className={Style.Secondary} angle={135} distance="50px">
                         <Add />
                     </Secondary>
-                    
-                    <Secondary className={Style.Secondary} angle={190} distance={50}>
+                    <Secondary className={Style.Secondary} angle={80} distance="50px">
                         <Add />
                     </Secondary>
                 </ButtonGroup>
             </div>
-
-            
-            <TaskContainer>
-                <Task />
-                <Task />
-                <Task />
-                <Task />
-                <Task />
-            </TaskContainer>
         </div>
     )
 }

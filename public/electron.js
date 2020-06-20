@@ -3,12 +3,16 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path');
 const isDev = require('electron-is-dev');
 
+// DISABLE CACHE
+app.commandLine.appendSwitch ("disable-http-cache");
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 400,
-    height: 440,
+    width: 434,
+    height: 476,
     frame:false,
+    transparent:true,
     webPreferences: { webSecurity: false},
   })
 

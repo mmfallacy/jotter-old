@@ -1,96 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, createRef} from 'react';
 import Classes from 'classnames'
 import Style from './styles/RadiallyPositionedButton.module.scss'
 
-import {TweenMax} from 'gsap'
+import GSAP from 'gsap'
 
-import {
-    Transition,
-    TransitionGroup,
-    CSSTransition
-} from 'react-transition-group';
-
-export function ButtonGroup({className, primary, children, duration, delay}){
+export function ButtonGroup({className,primary,children}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
-    
-    const onPrimaryClick = ()=>{
+    let childrenArray = useRef([]);
+
+    childrenArray.current = Array(children.length).fill(useRef(null))
+
+    const onPrimaryClick = () =>{
+        let tl = GSAP.timeline()
+        console.log(primaryStatus)
+        for(const childRef of childrenArray.current){
+            tl.from(childRef, {duration:0.8,x:'3px',y:'3px'})
+        }
+        
+        if(primaryStatus)
+            tl.reverse()
+
         togglePrimaryStatus(!primaryStatus)
     }
-
+    
     return(
         <div className={Classes(Style.ButtonGroup,className)}>
-
-            <button 
-                className={Classes(Style.Primary, primary.className)} 
-                onClick={onPrimaryClick}
-            >
-                {primary.content}
-            </button>
-
-            <TransitionGroup component={null}>
-                {React.Children.map(children, (child,i)=> // pass props
-                    React.cloneElement(child, {
-                        visible: primaryStatus,
-                        duration: ( duration || undefined ),
-                        delay: ( delay || undefined ),
-                        indexes: [ i, children.length-i-1 ],
-                    })
-                )}
-            </TransitionGroup>
-
-            <CSSTransition
-                in={primaryStatus}
-                classNames={{
-                    enterActive:Style.enterActive,
-                    enterDone:Style.enterDone,
-                    exitDone:Style.exitDone,
-                    exit:Style.exitActive
-                }}
-                timeout={500}
-                mountOnEnter
-                unmountOnExit
-            >
-                <div className={Style.Overlay}></div>
-            </CSSTransition>
+            <button className={Classes(Style.Primary, primary.className)} onClick={onPrimaryClick}>{primary.content}</button>
+            {React.Children.map(children, (child,i)=>
+                React.cloneElement(child, {ref:(ref)=>childrenArray.current[i]=ref})
+            )}
         </div>
     )
 } 
 
-export const Secondary = ({indexes, visible, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
-    
-    const radians = angle * Math.PI/180
+export const Secondary = React.forwardRef( ({angle,distance,children,className},ref) => 
 
-    const aOnEnter = (el)=>{
-        TweenMax.to(el, duration, {
-            x:(distance * Math.cos(radians)),
-            y:(distance * Math.sin(radians)),
-             delay: indexes[0] * delay
-        })
-    }
+    // <div ref={ref} className={Classes(Style.Wrapper,'Secondary')} style={{'--distance':distance}}>
+        <button ref={ref} className={Classes(Style.Secondary, className)} style={{'--angle':angle,'--distance':distance}}>{children}</button>
+    //</div>
 
-    const aOnExit = (el)=>{
-        TweenMax.to(el, duration, {
-            x:0,
-            y:0,
-             delay: indexes[0] * delay
-        })
-
-    }
-
-    return (
-        <Transition 
-            key={indexes[0]}
-            in={visible}
-            onEnter={aOnEnter}
-            onExit={aOnExit}
-            timeout={{
-                enter:((duration + indexes[0] * delay) * 1000), 
-                exit:((duration + .2 + indexes[1] * delay) * 1000) // add 200ms to wait for animation to end
-            }}
-            mountOnEnter
-            unmountOnExit
-        >
-            <button className={Classes(Style.Secondary, className)}>{children}</button>
-        </Transition>
-    )
-}
+)
