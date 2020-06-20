@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import Style from './styles/Jot.module.scss'
 
@@ -10,6 +10,14 @@ import {TaskContainer, TimelyTask} from './Task';
 
 
 export default function Jot(){
+
+    const [taskArray, setTaskArray] = useState([
+        {type:"timely", title:"A random timely task A random timely task A random timely task A random timely task", time:"12:30 AM"},
+        {type:"linked", title:"Hi", time:"1:30 AM"},
+        {type:"note", title:"Sample Note", time:"2:30 AM"}
+    ])
+
+
     return(
         <div className={Style.Jot}>
             <div className={Style.Header}>
@@ -45,7 +53,17 @@ export default function Jot(){
 
             
             <TaskContainer>
-                <TimelyTask />
+                {taskArray.map(({type, ...taskInfo}, i)=>{
+                        switch (type) {
+                            case 'timely':
+                                return <TimelyTask key={i} {...taskInfo} />
+                            case 'linked':
+                                return <TimelyTask key={i} title="Linked Placeholder" />
+                            default :
+                                return <TimelyTask key={i} title="Note Placeholder" />
+                        }
+                    })
+                }
             </TaskContainer>
         </div>
     )

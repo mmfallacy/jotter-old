@@ -4,24 +4,25 @@ import Classes from 'classnames'
 
 import Style from './styles/Task.module.scss'
 
-import {ReactComponent as Tick} from './assets/Task/tick.svg';
-import {ReactComponent as Minus} from './assets/Task/minus.svg';
+import {ReactComponent as Tick} from './assets/Task/tick.svg'
+import {ReactComponent as Minus} from './assets/Task/minus.svg'
 
-import {CSSTransition} from 'react-transition-group';
+import {CSSTransition} from 'react-transition-group'
 
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 export function TaskContainer({children}){
 
 
     return(
-        <div className={Style.TaskContainer}>
+        <ScrollContainer className={Style.TaskContainer}>
             {children}
-        </div>
+        </ScrollContainer>
     )
 }
 
 
-export function TimelyTask({taskName, taskTime}){
+export function TimelyTask({title, time}){
     const [isActive, toggleStatus] = useState(false);
     const [isTicked, toggleTick] = useState(false);
 
@@ -46,11 +47,11 @@ export function TimelyTask({taskName, taskTime}){
 
             <span className={Style.TaskName}>
                 <hr className={Style.Strikethrough} />
-                {taskName}
+                {title}
             </span>
 
             <span className={Style.TaskTime}>
-                {taskTime}
+                {time}
             </span>
         </div>
     )

@@ -9,6 +9,8 @@ app.commandLine.appendSwitch ("disable-http-cache");
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    minWidth: 434,
+    minHeight: 200,
     width: 434,
     height: 476,
     frame:false,
