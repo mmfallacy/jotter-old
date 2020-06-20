@@ -1,0 +1,51 @@
+@import '../../variables.scss/';
+
+.Jot{
+    height:100%;
+    width:100%;
+    padding:12px;
+    color: white;
+}
+
+.Header{
+    padding:12px;
+    position: relative;
+    border-bottom: 1px solid rgba(white,.1);
+    user-select: none;
+
+    .Weekday{
+        font-size: 22px;
+        color: $orange;
+        &::after{
+            content: ','
+        }
+    }
+    .Day{
+        font-size:22px;
+        font-weight: normal;
+    }
+    .Month{
+        font-size: 14px;
+        font-weight: lighter;
+        line-height: 19px;
+    }
+    .Row{
+        display:flex;
+    }
+}
+
+
+.ButtonGroup{
+    position: absolute;
+    bottom:-19px;
+    right:12px;
+    .Primary{
+        height:38px;
+        width:38px;
+    }
+
+    .Secondary{
+        height:38px;
+        width:38px;
+    }
+}

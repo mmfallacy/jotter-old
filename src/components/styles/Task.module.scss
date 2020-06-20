@@ -1,0 +1,178 @@
+@import '../../variables.scss/';
+
+
+.TaskContainer{
+    width:100%;
+    height: 79%;
+    margin-top: 25px;
+}
+
+
+.Task{
+    height:60px;
+    width:100%;
+    border-bottom:1px solid rgba(white,.1);
+    padding: 20px;
+
+    position: relative;
+
+    display:flex;
+    align-items: center;
+
+}
+
+.LeftColor{
+    height:100%;
+    width:5px;
+    background-color: $pink;
+
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+.Background{
+    height:100%;
+    width:5px;
+    background-color: rgba(white,.1);
+
+    position: absolute;
+    top:0;
+    left:0;
+
+    transition: width .4s ease-out;
+    .active &{
+        width:100%;
+    }
+}
+
+.ButtonContainer{
+    height:18px;
+    width:18px;
+    position: relative;
+    z-index: 2;
+}
+
+%TaskButton{
+    height:100%;
+    width:100%;
+    border-radius: 2.5px;
+
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+    cursor:pointer;
+
+}
+
+.Checkbox{
+    @extend %TaskButton;
+    background: none;
+    border:1px solid $orange;
+    position: absolute;
+    top:0;
+    left:0;
+
+    transition:background-color .2s linear;
+    &.active{
+        background-color: $orange;
+    }
+}
+
+.Delete{
+    @extend %TaskButton;
+    background: none;
+    border:1px solid $orange;
+    position: absolute;
+    top:0;
+    left:0;
+    svg{
+        opacity:0;
+    }
+
+
+    &.enterActive{
+        border:1px solid $pink;
+        background: $pink;
+        transition:border .1s linear, background-color .1s linear;
+        transition-delay: .25s;
+        svg{
+            opacity:1;
+            transition:opacity .1s linear;
+            transition-delay: .5s;
+        }
+
+    }
+    &.enterDone{
+        border:1px solid $pink;
+        background: $pink;
+        svg{
+            opacity:1;
+        }
+
+    }
+    &.exitActive{
+        border:1px solid $orange;
+        background: none;
+        transition:border .1s linear, background-color .1s linear;
+        transition-delay: .25s;
+        svg{
+            opacity:0;
+            transition:opacity .15s linear;
+        }
+    }
+    &.exitDone{
+        opacity:0;
+
+        svg{
+            opacity:0;
+        }
+    }
+}
+
+
+.TaskName{
+    margin-left: 17px;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+    padding: 0 3px;
+
+    color: white;
+    transition: color .4s ease-out .4s;
+
+
+    .ticked &{
+        color: rgba(white,.5)
+    }
+
+    .Strikethrough{
+        width:0;
+        position: absolute;
+        top:50%;
+        left:-2px;
+        transform: translateY(-50%);
+        transition: width .3s ease-out .3s;
+
+        height:.5px;
+        border:none;
+        background-color: #888787;
+    }
+    user-select: none;
+    .ticked & .Strikethrough{
+        width: calc(100% + 2px);
+        visibility: visible;
+    }
+}
+
+.TaskTime{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right:20px;
+    user-select: none;
+    
+    font-size: 10px;
+    color: rgba(white,.55);
+}
