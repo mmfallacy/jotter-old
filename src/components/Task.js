@@ -25,8 +25,6 @@ export function TaskContainer({children}){
 export function TimelyTask({title, time}){
     const [isActive, toggleStatus] = useState(false);
     const [isTicked, toggleTick] = useState(false);
-
-    const toggleTickLink = value => toggleTick(value)
     
     return(
         <div 
@@ -39,10 +37,8 @@ export function TimelyTask({title, time}){
             <span className={Style.Background}></span>
             <span className={Style.LeftColor}></span>
             <div className={Style.ButtonContainer}>
+                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
                 <Delete inProp={isActive} />
-                {
-                isActive || <Checkbox stateLink={toggleTickLink} />
-                }
             </div>
 
             <span className={Style.TaskName}>
@@ -57,24 +53,22 @@ export function TimelyTask({title, time}){
     )
 }
 
-function Checkbox({stateLink=()=>{},onCheck=()=>{}}){
-    const [tickStatus ,toggleTick] = useState(false)
+function Checkbox({state,stateUpdate,onCheck=()=>{}}){
 
     const onClickWrapper = ()=>{
         onCheck();
-        stateLink(state=>!state)
-        toggleTick(state=>!state) 
+        stateUpdate(prevState=>!prevState) 
     }
 
     return(
         <button 
             className={Classes(
                 Style.Checkbox,
-                tickStatus && Style.active
+                state && Style.active
             )}
             onClick={onClickWrapper}>
             { 
-            (tickStatus)
+            (state)
                 ? <Tick />
                 : false
             }
@@ -101,7 +95,9 @@ function Delete({onClick, inProp}){
                 className={Classes(
                     Style.Delete,
                 )}
-                onClick={onClick}>
+                onClick={onClick}
+                onDoubleClick = {(e)=>e.stopPropagation()}
+            >
                     <Minus />
             </button>
         </CSSTransition>
