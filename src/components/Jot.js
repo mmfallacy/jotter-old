@@ -23,14 +23,18 @@ export default function Jot(){
                         content:
                             <Add />
                     }}
+                    duration={.2}
+                    delay={.15}
                 >
-                    <Secondary className={Style.Secondary} angle={190} distance="50px">
+                    <Secondary className={Style.Secondary} angle={80} distance={50}>
                         <Add />
                     </Secondary>
-                    <Secondary className={Style.Secondary} angle={135} distance="50px">
+                    
+                    <Secondary className={Style.Secondary} angle={135} distance={50}>
                         <Add />
                     </Secondary>
-                    <Secondary className={Style.Secondary} angle={80} distance="50px">
+                    
+                    <Secondary className={Style.Secondary} angle={190} distance={50}>
                         <Add />
                     </Secondary>
                 </ButtonGroup>

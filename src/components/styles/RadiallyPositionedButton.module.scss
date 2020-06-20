@@ -2,10 +2,11 @@
 
 
 .ButtonGroup{
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height:auto;
     width:auto;
-    border:1px solid blue;
     %BaseButton{
         position: relative;
         
@@ -24,6 +25,8 @@
         width:38px;
         background-color: $orange;
         position: relative;
+        z-index:5;
+
         cursor:pointer;
         &:hover{
             transform: scale(1.05);
@@ -34,22 +37,21 @@
         height:32px;
         width:32px;
         background-color: $yellowOrange;
-        
+        z-index:5;
+
         position: absolute;
-        top:3px;
-        left:3px;
-        transform: rotate(calc(var(--angle) * 1deg)) translate(var(--distance)) rotate(calc(var(--angle) * -1deg));
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
     }
-    // .Wrapper{
-    //     display: block;
-    //     height:auto;
-    //     width:auto;
-    //     position: absolute;
-    //     top:2px;
-    //     left:2px;
+}
 
-    //     border:1px solid red;
-    //     transform: rotate(calc(var(--angle) * 1deg)) translate(var(--distance)) rotate(calc(var(--angle) * -1deg));
-
-    // }
+.Overlay{
+    height:100vh;
+    width:100vw;
+    background: rgba(black,.35);
+    z-index:2;
+    position:fixed;
+    top:0;
+    left:0;
 }
