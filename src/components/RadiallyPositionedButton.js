@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import Classes from 'classnames'
 import Style from './styles/RadiallyPositionedButton.module.scss'
 
@@ -13,12 +13,13 @@ import {
 export function ButtonGroup({className, primary, children, duration, delay}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
     
+
     const onPrimaryClick = ()=>{
         togglePrimaryStatus(state=>!state)
     }
 
     return(
-        <div className={Classes(Style.ButtonGroup,className)}>
+        <div className={Classes(Style.ButtonGroup,className)} >
 
             <button 
                 className={Classes(Style.Primary, primary.className)} 
@@ -50,7 +51,7 @@ export function ButtonGroup({className, primary, children, duration, delay}){
                 mountOnEnter
                 unmountOnExit
             >
-                <div className={Style.Overlay}></div>
+                <div className={Style.Overlay} onClick={()=>togglePrimaryStatus(false)}></div>
             </CSSTransition>
         </div>
     )
