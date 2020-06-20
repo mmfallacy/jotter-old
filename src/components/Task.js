@@ -21,7 +21,7 @@ export function TaskContainer({children}){
 }
 
 
-export function Task(){
+export function TimelyTask({taskName, taskTime}){
     const [isActive, toggleStatus] = useState(false);
     const [isTicked, toggleTick] = useState(false);
 
@@ -46,11 +46,11 @@ export function Task(){
 
             <span className={Style.TaskName}>
                 <hr className={Style.Strikethrough} />
-                Task 1
+                {taskName}
             </span>
 
             <span className={Style.TaskTime}>
-                12:30 AM
+                {taskTime}
             </span>
         </div>
     )

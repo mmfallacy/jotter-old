@@ -6,7 +6,7 @@ import {ReactComponent as Add} from './assets/Jot/add.svg'
 
 import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
-import {TaskContainer, Task} from './Task';
+import {TaskContainer, TimelyTask} from './Task';
 
 
 export default function Jot(){
