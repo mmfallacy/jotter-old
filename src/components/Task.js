@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import Classes from 'classnames'
 
@@ -6,13 +6,13 @@ import Style from './styles/Task.module.scss'
 
 import {ReactComponent as Tick} from './assets/Task/tick.svg'
 import {ReactComponent as Minus} from './assets/Task/minus.svg'
+import {ReactComponent as Link} from './assets/Task/link.svg'
 
 import {CSSTransition} from 'react-transition-group'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 export function TaskContainer({children}){
-
 
     return(
         <ScrollContainer className={Style.TaskContainer}>
@@ -21,11 +21,16 @@ export function TaskContainer({children}){
     )
 }
 
+export const Task = {
+    Timely: TimelyTask,
+    Linked: LinkedTask,
+    Note: Note
+}
 
-export function TimelyTask({title, time}){
+function TimelyTask({title, color, time}){
     const [isActive, toggleStatus] = useState(false);
     const [isTicked, toggleTick] = useState(false);
-    
+
     return(
         <div 
             className={Classes(
@@ -33,9 +38,12 @@ export function TimelyTask({title, time}){
                 (isActive)? Style.active: false,
                 (isTicked)? Style.ticked: false
             )} 
-            onDoubleClick={()=>toggleStatus(!isActive)}>
+            style= {{'--color':color}}
+            onDoubleClick={()=>toggleStatus(!isActive)}
+        >
             <span className={Style.Background}></span>
             <span className={Style.LeftColor}></span>
+
             <div className={Style.ButtonContainer}>
                 <Checkbox state={isTicked} stateUpdate={toggleTick}/>
                 <Delete inProp={isActive} />
@@ -48,6 +56,78 @@ export function TimelyTask({title, time}){
 
             <span className={Style.TaskTime}>
                 {time}
+            </span>
+        </div>
+    )
+}
+
+function LinkedTask({title, color, time, onClickLink}){
+    const [isActive, toggleStatus] = useState(false);
+    const [isTicked, toggleTick] = useState(false);
+
+    return(
+        <div 
+            className={Classes(
+                Style.Task,
+                Style.Linked,
+                (isActive)? Style.active: false,
+                (isTicked)? Style.ticked: false
+            )} 
+            style= {{'--color':color}}
+            onDoubleClick={()=>toggleStatus(!isActive)}>
+            <span className={Style.Background}></span>
+            <span className={Style.LeftColor}></span>
+            <div className={Style.ButtonContainer}>
+                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
+                <Delete inProp={isActive} />
+            </div>
+
+            <span className={Style.TaskName}>
+                <hr className={Style.Strikethrough} />
+                {title}
+            </span>
+            <button
+                className={Classes(
+                    Style.Link,
+                    onClickLink && Style.hasLink,
+                )}
+                onDoubleClick = {(e)=>e.stopPropagation()}
+                onClick = {onClickLink} 
+            >
+                <Link />
+            </button>
+            <span className={Style.TaskTime}>
+                {time}
+            </span>
+        </div>
+    )
+}
+
+function Note({title,color}){
+    const [isActive, toggleStatus] = useState(false);
+    const [isTicked, toggleTick] = useState(false);
+
+    return(
+        <div 
+            className={Classes(
+                Style.Task,
+                (isActive)? Style.active: false,
+                (isTicked)? Style.ticked: false
+            )} 
+            style= {{'--color':color}}
+            onDoubleClick={()=>toggleStatus(!isActive)}
+        >
+            <span className={Style.Background}></span>
+            <span className={Style.LeftColor}></span>
+
+            <div className={Style.ButtonContainer}>
+                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
+                <Delete inProp={isActive} />
+            </div>
+
+            <span className={Style.TaskName}>
+                <hr className={Style.Strikethrough} />
+                {title}
             </span>
         </div>
     )

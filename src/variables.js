@@ -37,3 +37,5 @@ export const DATE_TEXT = {
         }
     }
 }
+
+export const NAMESPACE = "48e48b76-13a9-416e-85f0-fc3f43394628"

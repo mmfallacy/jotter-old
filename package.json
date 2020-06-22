@@ -6,6 +6,7 @@
   "private": true,
   "main": "public/electron.js",
   "dependencies": {
+    "@craco/craco": "^5.6.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -20,13 +21,13 @@
     "react-dom": "^16.13.1",
     "react-indiana-drag-scroll": "^1.6.1",
     "react-scripts": "3.4.1",
-    "react-transition-group": "^4.4.1"
+    "react-transition-group": "^4.4.1",
+    "uuid": "^8.1.0"
   },
   "scripts": {
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
+    "react-start": "craco start",
+    "react-build": "craco build",
+    "react-test": "craco test",
     "electron-build": "electron-builder",
     "build": "npm run react-build && npm run electron-build",
     "dev": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\" "

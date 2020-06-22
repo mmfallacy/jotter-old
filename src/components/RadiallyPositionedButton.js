@@ -13,15 +13,22 @@ import {
 export function ButtonGroup({className, primary, children, duration, delay}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
     
+    const primaryRef = useRef(null)
 
     const onPrimaryClick = ()=>{
         togglePrimaryStatus(state=>!state)
     }
 
+    const disablePrimaryOnBlur = (e)=>{
+        if(primaryStatus && !(primaryRef.current.contains(e.target) || e.target===primaryRef.current))
+            togglePrimaryStatus(false)
+    }
+
     return(
-        <div className={Classes(Style.ButtonGroup,className)} >
+        <div className={Classes(Style.ButtonGroup,className)} onClick={disablePrimaryOnBlur}>
 
             <button 
+                ref={primaryRef}
                 className={Classes(Style.Primary, primary.className)} 
                 onClick={onPrimaryClick}
             >
@@ -35,6 +42,7 @@ export function ButtonGroup({className, primary, children, duration, delay}){
                         duration: ( duration || undefined ),
                         delay: ( delay || undefined ),
                         indexes: [ i, children.length-i-1 ],
+                        
                     })
                 )}
             </TransitionGroup>
@@ -51,13 +59,13 @@ export function ButtonGroup({className, primary, children, duration, delay}){
                 mountOnEnter
                 unmountOnExit
             >
-                <div className={Style.Overlay} onClick={()=>togglePrimaryStatus(false)}></div>
+                <div className={Style.Overlay}></div>
             </CSSTransition>
         </div>
     )
 } 
 
-export const Secondary = ({indexes, visible, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
+export const Secondary = ({onClick=()=>{},indexes, visible, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
     
     const radians = angle * Math.PI/180
 
@@ -91,7 +99,7 @@ export const Secondary = ({indexes, visible, duration=.4, angle=0, distance=50, 
             mountOnEnter
             unmountOnExit
         >
-            <button className={Classes(Style.Secondary, className)}>{children}</button>
+            <button onClick={()=>onClick()} className={Classes(Style.Secondary, className)}>{children}</button>
         </Transition>
     )
 }

@@ -22,15 +22,19 @@
 
     display:grid;
     grid-template-columns: 18px auto 45px;
+    &.Linked{
+        grid-template-columns: 18px auto 25px 45px;
+    }
 
     justify-items: start;
+
 
 }
 
 .LeftColor{
     height:100%;
     width:5px;
-    background-color: $pink;
+    background-color: var(--color);
 
     position: absolute;
     top:0;
@@ -186,4 +190,26 @@
     font-size: 10px;
     color: rgba(white,.55);
     justify-self: right;
+}
+
+
+.Link{
+    height:100%;
+    background: none;
+    border:none;
+    width:100%;
+
+    margin-left:-6.5px;
+    margin-right:6.5px;
+    
+    svg{
+        stroke:rgba(white,.4);
+    }
+
+    &.hasLink {
+        cursor:pointer;
+        svg{
+            stroke:white;
+        }
+    }
 }

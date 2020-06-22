@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow , ipcMain, shell} = require('electron')
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -15,7 +15,7 @@ function createWindow () {
     height: 476,
     frame:false,
     transparent:true,
-    webPreferences: { webSecurity: false},
+    webPreferences: { webSecurity: false,  nodeIntegration: true},
   })
 
   // and load the index.html of the app.
@@ -29,5 +29,17 @@ app.whenReady().then(createWindow)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
+  }
+})
+
+
+ipcMain.on('execute-link',(event, {type,value})=>{
+  console.log(type,value)
+  switch(type){
+    case 'executable':
+      return;
+    default:
+      shell.openExternal(value)
+      return
   }
 })
