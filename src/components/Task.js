@@ -24,7 +24,8 @@ export function TaskContainer({children}){
 export const Task = {
     Timely: TimelyTask,
     Linked: LinkedTask,
-    Note: Note
+    Note: Note,
+    New: New
 }
 
 function TimelyTask({title, color, time}){
@@ -133,7 +134,34 @@ function Note({title,color}){
     )
 }
 
-function Checkbox({state,stateUpdate,onCheck=()=>{}}){
+function New(){
+    return(
+        <div 
+            className={Style.New}
+        >
+            <span className={Style.LeftColor}></span>
+
+            <div className={Style.ButtonContainer}>
+                <Checkbox disabled/>
+            </div>
+
+            <input className={Style.TaskName} placeholder="Enter Task Title...">
+            </input>
+            <button
+                className={Classes(
+                    Style.Link
+                )}
+            >
+                <Link />
+            </button>
+            <button className={Style.TaskTime}>
+                12:30AM
+            </button>
+        </div>
+    )
+}
+
+function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
 
     const onClickWrapper = ()=>{
         onCheck();
@@ -146,7 +174,7 @@ function Checkbox({state,stateUpdate,onCheck=()=>{}}){
                 Style.Checkbox,
                 state && Style.active
             )}
-            onClick={onClickWrapper}>
+            onClick={onClickWrapper} disabled={disabled}>
             { 
             (state)
                 ? <Tick />

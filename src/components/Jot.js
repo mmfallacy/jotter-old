@@ -24,6 +24,7 @@ export default function Jot(){
         {type:"note", color:'black', title:"Sample Note", time:"2:30 AM"}
     ])
 
+    const [newTask, setNewTask] = useState(null)
     const [currentMonth, setMonth] = useState(moment().month())
     const [currentWeekday, setWeekday] = useState(moment().day())
     const [currentDay, setDay] = useState(moment().date())
@@ -64,7 +65,7 @@ export default function Jot(){
                     duration={.2}
                     delay={.15}
                 >
-                    <Secondary onClick={()=>setTaskArray(tasks=>[...tasks, {type:"new"}])} className={Style.Secondary} angle={80} distance={50}>
+                    <Secondary onClick={()=>setNewTask({type:"timely"})} className={Style.Secondary} angle={80} distance={50}>
                         <Add />
                     </Secondary>
                     
@@ -89,11 +90,12 @@ export default function Jot(){
                             case 'note' :
                                 return <Task.Note key={i} {...taskInfo} />
                             default:
-                                return <Task.Timely key={i} title="Create Placeholder" />
+                                return <Task.Note key={i} title="Corrupted Task! Please delete." />
 
                         }
                     })
                 }
+                { newTask && <Task.New type={newTask.type} stateMethod={setNewTask} onSubmit={(task)=>setTaskArray({...taskArray, task})}/> }
             </TaskContainer>
         </div>
     )

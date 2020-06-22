@@ -21,12 +21,13 @@
     position: relative;
 
     display:grid;
-    grid-template-columns: 18px auto 45px;
+    grid-template-columns: 18px auto 50px;
     &.Linked{
-        grid-template-columns: 18px auto 25px 45px;
+        grid-template-columns: 18px auto 25px 50px;
     }
 
     justify-items: start;
+    align-items: center;
 
 
 }
@@ -87,6 +88,9 @@
     transition:background-color .2s linear;
     &.active{
         background-color: $orange;
+    }
+    &:disabled{
+        cursor:default;
     }
 }
 
@@ -197,8 +201,9 @@
     height:100%;
     background: none;
     border:none;
-    width:100%;
+    width:30px;
 
+    margin-top: 2.5px;
     margin-left:-6.5px;
     margin-right:6.5px;
     
@@ -208,8 +213,46 @@
 
     &.hasLink {
         cursor:pointer;
+        transition: transform .05s linear;
         svg{
             stroke:white;
         }
+        &:hover{
+            transform: scale(1.05)
+        }
+    }
+}
+
+.New {
+    @extend .Task;
+    @extend .Task.Linked;
+
+    .Checkbox{
+        border-color: rgba(white,.4);
+    }
+    .LeftColor{
+        background-color: rgba(white,.4);
+        width: 10px;
+        cursor:pointer;
+    }
+    .Link{
+        cursor: pointer;
+    }
+
+    .TaskName{
+        background: none;
+        border:none;
+        padding-bottom:3px;
+        border-bottom: 1px solid rgba(white,.55);
+        box-sizing:content-box;
+        margin-bottom:-3.5px;
+    }
+    .TaskTime{
+        padding:1px 7.5px;
+        background: none;
+        border:1px solid rgba(white,.55);
+        border-radius:5rem;
+        margin-right:-12.5px;
+        cursor:pointer;
     }
 }
