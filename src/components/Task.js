@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 import Classes from 'classnames'
 
@@ -12,12 +12,16 @@ import {CSSTransition} from 'react-transition-group'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 
+import {useDrag} from 'react-use-gesture'
+
+import {TweenMax} from 'gsap'
+
 import {ipcRenderer as main} from 'electron'
 
 export function TaskContainer({children}){
 
     return(
-        <ScrollContainer className={Style.TaskContainer}>
+        <ScrollContainer ignoreElements="button, input, .ignore-scrolling" className={Style.TaskContainer}>
             {children}
         </ScrollContainer>
     )
@@ -87,29 +91,48 @@ export function Task(props){
     )
 }
 
-export function Entry(){
+export function Entry({variant, save=()=>{}, discard=()=>{}}){
+    const [taskName,setTaskName] = useState("test")
+    const self = useRef(null)
+
     return(
         <div 
-            className={Style.New}
+            ref={self}
+            className={Classes(
+                Style.New,
+                variant==='linked' && Style.Linked,
+                variant==='note' && Style.Note,
+            )}
         >
             <span className={Style.LeftColor}></span>
 
             <div className={Style.ButtonContainer}>
-                <Checkbox disabled/>
+                <EntryButton confirm={save} decline={discard}/>
             </div>
 
-            <input className={Style.TaskName} placeholder="Enter Task Title...">
-            </input>
-            <button
-                className={Classes(
-                    Style.Link
-                )}
+            <input 
+                type="text"
+                className={Style.TaskName} 
+                placeholder="Enter Task Title..."
+                value={taskName}
+                onChange={(e)=>setTaskName(e.target.value)}
             >
-                <Link />
-            </button>
-            <button className={Style.TaskTime}>
-                12:30AM
-            </button>
+            </input>
+            
+            {  variant==='linked' &&
+                <button
+                    className={Classes(
+                        Style.Link
+                    )}
+                >
+                    <Link />
+                </button>
+            }
+            { variant!=='note' &&
+                <button className={Style.TaskTime}>
+                    12:30AM
+                </button>
+            }
         </div>
     )
 }
@@ -164,3 +187,34 @@ function Delete({onClick, inProp}){
     )
 }
 
+function EntryButton({confirm=()=>{},decline=()=>{}}){
+    const self = useRef(null)
+    const bind = useDrag(
+        ({down, cancel,canceled, movement:[mx,my]})=>{
+            let mapped_my = 0 + (100 - 0) * (my + 30) / 60;
+            console.log(mapped_my, my)
+            TweenMax.to(self.current, {y:down ? my : 0, backgroundPositionY: down ? mapped_my : 50 })
+            
+            if(canceled) return
+            if(my <-20){
+                cancel()
+                setTimeout(confirm, 250);
+
+            }
+            else if( my > 20){
+                cancel()
+                setTimeout(decline, 250);
+            }
+        }, 
+    // OPTIONS
+        {
+            bounds: {left:0,right:0, top: -10, bottom: 10 },
+            rubberband: true
+        }
+    )
+    return(
+        <div ref={self} {...bind()} className={Classes(Style.EntryButton,'ignore-scrolling')}>
+            
+        </div>
+    )
+}

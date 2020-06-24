@@ -21,10 +21,10 @@ export default function Jot(){
     const [taskArray, setTaskArray] = useState([
         {type:"timely", color:'#FF5151', title:"A random timely task A random timely task A random timely task A random timely task", time:"12:30 AM"},
         {type:"linked", color:'green', title:"Link31232131232132131231ed Placeholder", link:{type:'site', value:'https://github.com'},time:"1:30 AM"},
-        {type:"note", color:'black', title:"Sample Note", time:"2:30 AM"}
+        {type:"note", color:'black', title:"Sample NoteLink31232131232132131231ed", time:"2:30 AM"}
     ])
 
-    const [newTask, setNewTask] = useState(null)
+    const [newTask, setNewTask] = useState(false)
     const [currentMonth, setMonth] = useState(moment().month())
     const [currentWeekday, setWeekday] = useState(moment().day())
     const [currentDay, setDay] = useState(moment().date())
@@ -65,15 +65,15 @@ export default function Jot(){
                     duration={.2}
                     delay={.15}
                 >
-                    <Secondary onClick={()=>setNewTask({type:"timely"})} className={Style.Secondary} angle={80} distance={50}>
+                    <Secondary onClick={()=>setNewTask({type:"linked"})} className={Style.Secondary} angle={80} distance={50}>
                         <Add />
                     </Secondary>
                     
-                    <Secondary className={Style.Secondary} angle={135} distance={50}>
+                    <Secondary onClick={()=>setNewTask({type:"timely"})} className={Style.Secondary} angle={135} distance={50}>
                         <Add />
                     </Secondary>
                     
-                    <Secondary className={Style.Secondary} angle={190} distance={50}>
+                    <Secondary onClick={()=>setNewTask({type:"note"})} className={Style.Secondary} angle={190} distance={50}>
                         <Add />
                     </Secondary>
                 </ButtonGroup>
@@ -82,10 +82,10 @@ export default function Jot(){
             
             <TaskContainer>
                 { taskArray.map(({type, ...taskInfo}, i)=>
-                        <Task variant={type} {...taskInfo} />
+                        <Task variant={type} key={i} {...taskInfo} />
                   )
                 }
-                { newTask && <Entry type={newTask.type} stateMethod={setNewTask} onSubmit={(task)=>setTaskArray({...taskArray, task})}/> }
+                { newTask && <Entry variant={newTask.type} discard={()=>setNewTask(false)} onSubmit={(task)=>setTaskArray({...taskArray, task})}/> }
             </TaskContainer>
         </div>
     )

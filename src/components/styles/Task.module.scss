@@ -197,7 +197,7 @@
 .TaskTime{
     user-select: none;
     font-size: 10px;
-    color: rgba(white,.55);
+    color: $lightGray;
     justify-self: right;
 }
 
@@ -248,16 +248,39 @@
         background: none;
         border:none;
         padding-bottom:3px;
-        border-bottom: 1px solid rgba(white,.55);
+        border-bottom: 1px solid rgba(white,1);
         box-sizing:content-box;
         margin-bottom:-3.5px;
+        width:90%;
+        transition: border-bottom .25s linear;
+        &:placeholder-shown{
+            border-bottom: 1px solid $lightGray;
+        }
+        &:focus{
+            border-bottom: 1px solid rgba($orange,1);
+        }
     }
     .TaskTime{
         padding:1px 7.5px;
         background: none;
-        border:1px solid rgba(white,.55);
+        border:1px solid $lightGray;
         border-radius:5rem;
         margin-right:-12.5px;
         cursor:pointer;
     }
+}
+
+.EntryButton{
+    @extend %TaskButton;
+    
+    background: linear-gradient(to bottom, $orange, $lightGray, transparent);
+    background-position: left 50%;
+    background-size: 100% 800%;
+    
+    .Gestures{
+        .Drag-up{
+            background-position: left 0%;
+        }
+    }
+
 }
