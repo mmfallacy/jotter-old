@@ -12,6 +12,8 @@ import {CSSTransition} from 'react-transition-group'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 
+import {ipcRenderer as main} from 'electron'
+
 export function TaskContainer({children}){
 
     return(
@@ -21,14 +23,17 @@ export function TaskContainer({children}){
     )
 }
 
-export const Task = {
-    Timely: TimelyTask,
-    Linked: LinkedTask,
-    Note: Note,
-    New: New
-}
+export function Task(props){
 
-function TimelyTask({title, color, time}){
+    const {
+        id,
+        variant,
+        title,
+        color, 
+        time, 
+        link
+    } = props
+
     const [isActive, toggleStatus] = useState(false);
     const [isTicked, toggleTick] = useState(false);
 
@@ -36,15 +41,20 @@ function TimelyTask({title, color, time}){
         <div 
             className={Classes(
                 Style.Task,
+                variant==='linked' && Style.Linked,
+                variant==='note' && Style.Note,
                 (isActive)? Style.active: false,
                 (isTicked)? Style.ticked: false
-            )} 
+            )}
+             
             style= {{'--color':color}}
-            onDoubleClick={()=>toggleStatus(!isActive)}
+
+            onDoubleClick={(e)=>(e.target==="button") && toggleStatus(!isActive)}
         >
             <span className={Style.Background}></span>
+            
             <span className={Style.LeftColor}></span>
-
+            
             <div className={Style.ButtonContainer}>
                 <Checkbox state={isTicked} stateUpdate={toggleTick}/>
                 <Delete inProp={isActive} />
@@ -54,87 +64,30 @@ function TimelyTask({title, color, time}){
                 <hr className={Style.Strikethrough} />
                 {title}
             </span>
+            
+            { variant === "linked" &&       // IF LinkedTask         
+                <button
+                    className={Classes(
+                        Style.Link,
+                        link && Style.hasLink,
+                    )}
+                    onClick = {()=>main.send('execute-link',link)} 
+                >
+                    <Link />
+                </button>
+            }
 
-            <span className={Style.TaskTime}>
-                {time}
-            </span>
-        </div>
+            { variant !== "note" &&         // IF TimelyTask, LinkedTask 
+                <span className={Style.TaskTime}>
+                    {time}
+                </span>
+            }
+
+        </div>  
     )
 }
 
-function LinkedTask({title, color, time, onClickLink}){
-    const [isActive, toggleStatus] = useState(false);
-    const [isTicked, toggleTick] = useState(false);
-
-    return(
-        <div 
-            className={Classes(
-                Style.Task,
-                Style.Linked,
-                (isActive)? Style.active: false,
-                (isTicked)? Style.ticked: false
-            )} 
-            style= {{'--color':color}}
-            onDoubleClick={()=>toggleStatus(!isActive)}>
-            <span className={Style.Background}></span>
-            <span className={Style.LeftColor}></span>
-            <div className={Style.ButtonContainer}>
-                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
-                <Delete inProp={isActive} />
-            </div>
-
-            <span className={Style.TaskName}>
-                <hr className={Style.Strikethrough} />
-                {title}
-            </span>
-            <button
-                className={Classes(
-                    Style.Link,
-                    onClickLink && Style.hasLink,
-                )}
-                onDoubleClick = {(e)=>e.stopPropagation()}
-                onClick = {onClickLink} 
-            >
-                <Link />
-            </button>
-            <span className={Style.TaskTime}>
-                {time}
-            </span>
-        </div>
-    )
-}
-
-function Note({title,color}){
-    const [isActive, toggleStatus] = useState(false);
-    const [isTicked, toggleTick] = useState(false);
-
-    return(
-        <div 
-            className={Classes(
-                Style.Task,
-                (isActive)? Style.active: false,
-                (isTicked)? Style.ticked: false
-            )} 
-            style= {{'--color':color}}
-            onDoubleClick={()=>toggleStatus(!isActive)}
-        >
-            <span className={Style.Background}></span>
-            <span className={Style.LeftColor}></span>
-
-            <div className={Style.ButtonContainer}>
-                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
-                <Delete inProp={isActive} />
-            </div>
-
-            <span className={Style.TaskName}>
-                <hr className={Style.Strikethrough} />
-                {title}
-            </span>
-        </div>
-    )
-}
-
-function New(){
+export function Entry(){
     return(
         <div 
             className={Style.New}
@@ -204,7 +157,6 @@ function Delete({onClick, inProp}){
                     Style.Delete,
                 )}
                 onClick={onClick}
-                onDoubleClick = {(e)=>e.stopPropagation()}
             >
                     <Minus />
             </button>

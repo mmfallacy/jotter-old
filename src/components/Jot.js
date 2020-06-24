@@ -6,7 +6,7 @@ import {ReactComponent as Add} from './assets/Jot/add.svg'
 
 import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
-import {TaskContainer, Task} from './Task';
+import {TaskContainer, Task, Entry} from './Task';
 
 import moment from "moment";
 
@@ -81,21 +81,11 @@ export default function Jot(){
 
             
             <TaskContainer>
-                {taskArray.map(({type, link, ...taskInfo}, i)=>{
-                        switch (type) {
-                            case 'timely':
-                                return <Task.Timely key={i} {...taskInfo} />
-                            case 'linked':
-                                return <Task.Linked key={i} onClickLink={()=>main.send('execute-link',link) } {...taskInfo} />
-                            case 'note' :
-                                return <Task.Note key={i} {...taskInfo} />
-                            default:
-                                return <Task.Note key={i} title="Corrupted Task! Please delete." />
-
-                        }
-                    })
+                { taskArray.map(({type, ...taskInfo}, i)=>
+                        <Task variant={type} {...taskInfo} />
+                  )
                 }
-                { newTask && <Task.New type={newTask.type} stateMethod={setNewTask} onSubmit={(task)=>setTaskArray({...taskArray, task})}/> }
+                { newTask && <Entry type={newTask.type} stateMethod={setNewTask} onSubmit={(task)=>setTaskArray({...taskArray, task})}/> }
             </TaskContainer>
         </div>
     )

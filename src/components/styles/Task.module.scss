@@ -26,6 +26,11 @@
         grid-template-columns: 18px auto 25px 50px;
     }
 
+    &.Note{
+        grid-template-columns: 18px auto;
+    }
+
+
     justify-items: start;
     align-items: center;
 
