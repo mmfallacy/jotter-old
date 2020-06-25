@@ -18,15 +18,9 @@
     border-bottom:1px solid rgba(white,.1);
     padding: 20px;
 
-    display:flex;
     position: relative;
-    column-gap: 5px;
-
-    & > :nth-child(n + 4){
-        box-sizing: content-box;
-        margin-left: 5px;
-    }    
-
+    display: flex;
+    justify-content: space-between;
 
 }
 
@@ -146,20 +140,20 @@
 
 .TaskNameWrapper{
     height:100%;
-    width: calc(100% - 58px - 10px); // 100% - Sibling width - padding
-
+    width: calc(100% - 58px - 20px); // 100% - Sibling width - padding
+    display:flex;
+    align-items: flex-start;
 
     .Linked &{
-        width: calc(100% - 88px - 10px); // 100% - Sibling width - padding
+        width: calc(100% - 88px - 20px);//calc(100% - 88px - 10px); // 100% - Sibling width - padding
 
     }
 
     .Note &{
-        width: calc(100% - 18px - 5px); // 100% - Sibling width - padding
+        width: calc(100% - 18px - 10px); // 100% - Sibling width - padding
 
     }
 
-    background-color: red;
 }
 
 .TaskName{
@@ -171,13 +165,14 @@
     overflow: hidden;
 
     color: white;
+    
 
     transition: color .4s ease-out .4s;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
+    width:auto;
     max-width: 100%;
     user-select: none;
 
@@ -206,17 +201,17 @@
 }
 
 .TaskTime{
-    height:100%;
-    width:40px;
+    height:19px;
+    width:38px;
 
     user-select: none;
 
     font-size: 9px;
+    line-height: 19px;
 
     text-align: right;
     color: $lightGray;
-    justify-self: right;
-    border:1px solid red;
+
 }
 
 
@@ -225,6 +220,8 @@
     background: none;
     border:none;
     width:30px;
+    display:flex;
+    align-items: center;
     svg{
         stroke:rgba(white,.4);
     }

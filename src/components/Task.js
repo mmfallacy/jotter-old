@@ -65,10 +65,10 @@ export function Task(props){
             </div>
             
             <div className={Style.TaskNameWrapper}>
-                <span className={Style.TaskName}>
+                <div className={Style.TaskName}>
                     <hr className={Style.Strikethrough} />
                     {title}
-                </span>
+                </div>
             </div>
             
             { variant === "linked" &&       // IF LinkedTask         
