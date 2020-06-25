@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react';
 import Classes from 'classnames'
 import Style from './styles/RadiallyPositionedButton.module.scss'
 
-import {TweenMax} from 'gsap'
+import {TweenLite, Power3} from 'gsap'
 
 import {
     Transition,
@@ -70,19 +70,19 @@ export const Secondary = ({onClick=()=>{},indexes, visible, duration=.4, angle=0
     const radians = angle * Math.PI/180
 
     const aOnEnter = (el)=>{
-        TweenMax.to(el, duration, {
+        TweenLite.to(el, duration, {
             x:(distance * Math.cos(radians)),
             y:(distance * Math.sin(radians)),
              delay: indexes[0] * delay
-        })
+        }, Power3.easeOut)
     }
 
     const aOnExit = (el)=>{
-        TweenMax.to(el, duration, {
+        TweenLite.to(el, duration, {
             x:0,
             y:0,
              delay: indexes[0] * delay
-        })
+        }, Power3.easeIn)
 
     }
 
