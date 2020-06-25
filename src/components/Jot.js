@@ -19,8 +19,8 @@ import {ipcRenderer as main} from 'electron'
 export default function Jot(){
 
     const [taskArray, setTaskArray] = useState([
-        {type:"timely", color:'#FF5151', title:"A random timely task A random timely task A random timely task A random timely task", time:"12:30 AM"},
-        {type:"linked", color:'green', title:"Link31232131232132131231ed Placeholder", link:{type:'site', value:'https://github.com'},time:"1:30 AM"},
+        {type:"timely", color:'#FF5151', title:"A random timely task A random timely task A random timely task A random timely task", time:"99:99 AM"},
+        {type:"linked", color:'green', title:"Link", link:{type:'site', value:'https://github.com'},time:"12:59 AM"},
         {type:"note", color:'black', title:"Sample NoteLink31232131232132131231ed", time:"2:30 AM"}
     ])
 

@@ -63,11 +63,13 @@ export function Task(props){
                 <Checkbox state={isTicked} stateUpdate={toggleTick}/>
                 <Delete inProp={isActive} />
             </div>
-
-            <span className={Style.TaskName}>
-                <hr className={Style.Strikethrough} />
-                {title}
-            </span>
+            
+            <div className={Style.TaskNameWrapper}>
+                <span className={Style.TaskName}>
+                    <hr className={Style.Strikethrough} />
+                    {title}
+                </span>
+            </div>
             
             { variant === "linked" &&       // IF LinkedTask         
                 <button
@@ -99,7 +101,7 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
         <div 
             ref={self}
             className={Classes(
-                Style.New,
+                Style.Entry,
                 variant==='linked' && Style.Linked,
                 variant==='note' && Style.Note,
             )}
@@ -109,7 +111,7 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
             <div className={Style.ButtonContainer}>
                 <EntryButton confirm={save} decline={discard}/>
             </div>
-
+                
             <input 
                 type="text"
                 className={Style.TaskName} 
