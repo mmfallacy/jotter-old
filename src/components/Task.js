@@ -112,9 +112,10 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
                 <EntryButton confirm={save} decline={discard}/>
             </div>
                 
+                
             <input 
                 type="text"
-                className={Style.TaskName} 
+                className={Classes(Style.TaskName, Style.TaskNameWrapper)} 
                 placeholder="Enter Task Title..."
                 value={taskName}
                 onChange={(e)=>setTaskName(e.target.value)}
@@ -190,33 +191,9 @@ function Delete({onClick, inProp}){
 }
 
 function EntryButton({confirm=()=>{},decline=()=>{}}){
-    const self = useRef(null)
-    const bind = useDrag(
-        ({down, cancel,canceled, movement:[mx,my]})=>{
-            let mapped_my = 0 + (100 - 0) * (my + 30) / 60;
-            console.log(mapped_my, my)
-            TweenMax.to(self.current, {y:down ? my : 0, backgroundPositionY: down ? mapped_my : 50 })
-            
-            if(canceled) return
-            if(my <-20){
-                cancel()
-                setTimeout(confirm, 250);
-
-            }
-            else if( my > 20){
-                cancel()
-                setTimeout(decline, 250);
-            }
-        }, 
-    // OPTIONS
-        {
-            bounds: {left:0,right:0, top: -10, bottom: 10 },
-            rubberband: true
-        }
-    )
     return(
-        <div ref={self} {...bind()} className={Classes(Style.EntryButton,'ignore-scrolling')}>
-            
-        </div>
+        <button className={Classes(Style.EntryButton,'ignore-scrolling')}>
+            <Tick />
+        </button>
     )
 }
