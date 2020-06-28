@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Jot from './components/Jot'
+import Jot from './components/Jot';
 
 export default function App(){
     return(

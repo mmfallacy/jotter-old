@@ -270,6 +270,8 @@
             border-bottom: 1px solid rgba($orange,1);
         }
     }
+
+    // BUTTON TASK TIME
     .TaskTime{
         background: none;
         border:1px solid $lightGray;
@@ -279,6 +281,29 @@
         border-radius:5rem;
         margin-right:-7.5px;
         cursor:pointer;
+        position: relative;
+        overflow: hidden;
+
+        transition: border .2s ease-out;
+
+        .TaskTimeSet{
+            height:100%;
+            width:100%;
+            background-color: $orange;
+            position: absolute;
+            top:0;
+            left:0;
+            opacity:0;
+            transition: opacity .25s ease-out;
+
+        }
+
+        &:hover{
+            border: 1px solid $orange;
+            .TaskTimeSet{
+                opacity: 1;
+            }
+        }
     }
 }
 

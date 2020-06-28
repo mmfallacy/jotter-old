@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState} from 'react'
 
 import Classes from 'classnames'
 
@@ -12,11 +12,11 @@ import {CSSTransition} from 'react-transition-group'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 
-import {useDrag} from 'react-use-gesture'
 
-import {TweenMax} from 'gsap'
+import {ipcRenderer as main} from 'electron';
 
-import {ipcRenderer as main} from 'electron'
+import moment from 'moment';
+
 
 export function TaskContainer({children}){
 
@@ -94,12 +94,12 @@ export function Task(props){
 }
 
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
-    const [taskName,setTaskName] = useState("test")
-    const self = useRef(null)
+    const [name,setName] = useState("")
+    const [time,setTime] = useState(moment().format("h:mm A"))
+    const [isPickerOpen, setPickerState] = useState(false)
 
     return(
         <div 
-            ref={self}
             className={Classes(
                 Style.Entry,
                 variant==='linked' && Style.Linked,
@@ -117,8 +117,8 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
                 type="text"
                 className={Classes(Style.TaskName, Style.TaskNameWrapper)} 
                 placeholder="Enter Task Title..."
-                value={taskName}
-                onChange={(e)=>setTaskName(e.target.value)}
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
             >
             </input>
             
@@ -132,10 +132,14 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
                 </button>
             }
             { variant!=='note' &&
-                <button className={Style.TaskTime}>
-                    12:30AM
+                <button 
+                    className={Style.TaskTime}
+                    onClick={()=>setPickerState(true)}
+                >
+                    {time}
+                    <span className={Style.TaskTimeSet}> SET </span>
                 </button>
-            }
+                }
         </div>
     )
 }
@@ -197,3 +201,4 @@ function EntryButton({confirm=()=>{},decline=()=>{}}){
         </button>
     )
 }
+
