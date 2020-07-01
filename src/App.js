@@ -4,10 +4,10 @@ import Jot from './components/Jot';
 
 export default function App(){
     return(
-        <React.Fragment>
+        <div className='App-root'>
             <header className='Drag-Region'></header>
             <Jot type="timely">
             </Jot>
-        </React.Fragment>
+        </div>
     )
 }

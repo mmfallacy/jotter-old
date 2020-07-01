@@ -43,3 +43,25 @@ ipcMain.on('execute-link',(event, {type,value})=>{
       return
   }
 })
+
+ipcMain.on('spawnPicker',(event, type)=>{
+  spawnWindow[type]()
+})
+
+const spawnWindow ={
+  time : spawnTimePicker,
+  date : ()=>{}
+}
+
+function spawnTimePicker(){
+  const timePicker = new BrowserWindow({
+    minWidth: 300,
+    minHeight: 400,
+    resizable:false,
+    frame:false,
+    transparent:true,
+    webPreferences: { webSecurity: false,  nodeIntegration: true},
+  })
+
+  timePicker.loadURL(isDev ? 'http://localhost:3000/timepicker' : `file://${path.join(__dirname, '../build/index.html/timepicker')}`);
+}

@@ -1,20 +1,23 @@
 @import './variables.scss';
 
 
-html, body{
+html, body, #root{
     height:100%;
     width:100%;
 }
 
 body{
-    display:flex;
-    align-items: center;
-    justify-content: center;
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #root{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.App-root{
     height:95%;
     width:95%;
     border-radius: 5px;

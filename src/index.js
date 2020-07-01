@@ -4,9 +4,22 @@ import './global.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import {Route, Switch} from 'react-router-dom';
+
+
+// CHANGE TO HASHROUTER ON PRODUCTION
+
+import {BrowserRouter as Router} from 'react-router-dom'
+
 ReactDOM.render(
   <React.StrictMode>
-      <App />
+    <Router>
+      <Switch>
+        <Route path="/timepicker" render={()=><h1>test</h1>} />
+        <Route exact path="/" component={App} />
+        <Route path="*" render={()=><h1>"ERROR"</h1>} />
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -96,7 +96,6 @@ export function Task(props){
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
     const [name,setName] = useState("")
     const [time,setTime] = useState(moment().format("h:mm A"))
-    const [isPickerOpen, setPickerState] = useState(false)
 
     return(
         <div 
@@ -134,7 +133,7 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
             { variant!=='note' &&
                 <button 
                     className={Style.TaskTime}
-                    onClick={()=>setPickerState(true)}
+                    onClick={()=>main.send('spawnPicker','time')}
                 >
                     {time}
                     <span className={Style.TaskTimeSet}> SET </span>
