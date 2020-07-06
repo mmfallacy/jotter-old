@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './global.scss';
+
 import App from './App';
+import TimePicker from './components/TimePicker'
+
 import * as serviceWorker from './serviceWorker';
 
 import {Route, Switch} from 'react-router-dom';
@@ -15,7 +18,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path="/timepicker" render={()=><h1>test</h1>} />
+        <Route path="/timepicker" component={TimePicker} />
         <Route exact path="/" component={App} />
         <Route path="*" render={()=><h1>"ERROR"</h1>} />
       </Switch>

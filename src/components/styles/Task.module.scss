@@ -304,6 +304,15 @@
                 opacity: 1;
             }
         }
+        &:disabled{
+            
+            background-color: $gray;
+            color: $gray !important;
+            border-color: $gray !important;
+            .TaskTimeSet{
+                opacity:0;
+            }
+        }
     }
 }
 

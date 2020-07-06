@@ -13,6 +13,7 @@
     "@use-it/interval": "^0.1.3",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
+    "electron-bottom-most": "^0.3.0",
     "electron-is-dev": "^1.2.0",
     "gsap": "^3.3.3",
     "moment": "^2.27.0",
@@ -33,7 +34,8 @@
     "react-test": "craco test",
     "electron-build": "electron-builder",
     "build": "npm run react-build && npm run electron-build",
-    "dev": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\" "
+    "dev": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\" ",
+    "rebuild": "electron-rebuild -f"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,6 +56,7 @@
     "concurrently": "^5.2.0",
     "electron": "^9.0.4",
     "electron-builder": "^22.7.0",
+    "electron-rebuild": "^1.11.0",
     "wait-on": "^5.0.1"
   },
   "homepage": "./",

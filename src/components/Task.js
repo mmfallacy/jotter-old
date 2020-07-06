@@ -50,10 +50,11 @@ export function Task(props){
                 (isActive)? Style.active: false,
                 (isTicked)? Style.ticked: false
             )}
-             
-            style= {{'--color':color}}
 
-            onDoubleClick={(e)=>(e.target==="button") && toggleStatus(!isActive)}
+            onDoubleClick={(e)=>(e.target!=="button") && toggleStatus(!isActive)}
+             
+            style={{'--color':color}}
+
         >
             <span className={Style.Background}></span>
             
@@ -96,6 +97,21 @@ export function Task(props){
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
     const [name,setName] = useState("")
     const [time,setTime] = useState(moment().format("h:mm A"))
+    const [isPickerOpen, setPickerState] = useState(false)
+
+    const spawnTimePicker = (e)=>{
+        setPickerState(true)
+        
+        const viewportRect = document.body.getBoundingClientRect()
+        const targetRect = e.target.getBoundingClientRect()
+
+        const offset = {
+            x: Math.round(targetRect.left - viewportRect.left),
+            y: Math.round(targetRect.top - viewportRect.top + targetRect.height)
+        }
+        main.send('spawnPicker','time',offset)
+        main.once('picker-is-closed', ()=>{console.log('picker closed');setPickerState(false)})
+    }
 
     return(
         <div 
@@ -133,7 +149,8 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
             { variant!=='note' &&
                 <button 
                     className={Style.TaskTime}
-                    onClick={()=>main.send('spawnPicker','time')}
+                    onClick={spawnTimePicker}
+                    disabled={isPickerOpen}
                 >
                     {time}
                     <span className={Style.TaskTimeSet}> SET </span>
