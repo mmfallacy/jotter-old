@@ -97,10 +97,8 @@ export function Task(props){
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
     const [name,setName] = useState("")
     const [time,setTime] = useState(moment().format("h:mm A"))
-    const [isPickerOpen, setPickerState] = useState(false)
 
     const spawnTimePicker = (e)=>{
-        setPickerState(true)
         
         const viewportRect = document.body.getBoundingClientRect()
         const targetRect = e.target.getBoundingClientRect()
@@ -110,7 +108,6 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
             y: Math.round(targetRect.top - viewportRect.top + targetRect.height)
         }
         main.send('spawnPicker','time',offset)
-        main.once('picker-is-closed', ()=>{console.log('picker closed');setPickerState(false)})
     }
 
     return(
@@ -150,7 +147,6 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
                 <button 
                     className={Style.TaskTime}
                     onClick={spawnTimePicker}
-                    disabled={isPickerOpen}
                 >
                     {time}
                     <span className={Style.TaskTimeSet}> SET </span>

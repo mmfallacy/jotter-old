@@ -4,6 +4,8 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 const {SetBottomMost} = require('electron-bottom-most')
 
+const {PickerWindow} = require('./modules/ChildWindow')
+
 // DISABLE CACHE
 app.commandLine.appendSwitch ("disable-http-cache");
 
@@ -19,6 +21,7 @@ function createWindow () {
     frame:false,
     transparent:true,
     minimizable:false,
+    resizable:false, // DEPRECATED RESIZABILITY DUE TO RESIZING BUG
     webPreferences: { webSecurity: false,  nodeIntegration: true},
   })
 
@@ -63,35 +66,60 @@ const spawnWindow ={
 
 function spawnTimePicker(parent, offset){
   const parentPos = parent.getPosition()
-  console.log(parentPos, offset)
-  let timePicker = new BrowserWindow({
-    width: 300,
-    height: 400,
-    x: parentPos[0] + offset.x,
-    y: parentPos[1] + offset.y,
-    resizable:false,
-    frame:false,
-    transparent:true,
-    parent: parent,
-    show:false,
-    webPreferences: { webSecurity: false,  nodeIntegration: true},
-  })
-
-  timePicker.loadURL(isDev ? 'http://localhost:3000/timepicker' : `file://${path.join(__dirname, '../build/index.html/timepicker')}`);
-
-  timePicker.on('ready-to-show', ()=>{
-    timePicker.show()
-    // ASSIGN FOCUS EVENT HANDLER ON PARENT FOCUS
-    parent.once('focus', ()=>{
-      // START EXIT ANIMATION
-      timePicker.webContents.send('start-exit-anim')
-      parent.webContents.send('picker-is-closed')
-      timePicker.on('ready-to-close', ()=>{
-        timePicker.close()
-        timePicker = null
-      })
-
+  const timePicker = new PickerWindow(
+    parent,
+    isDev ? 'http://localhost:3000/timepicker' : `file://${path.join(__dirname, '../build/index.html/timepicker')}`,
+    {
+      width: 300,
+      height: 400,
+      x: parentPos[0] + offset.x,
+      y: parentPos[1] + offset.y,
+      resizable:false,
+      frame:false,
+      transparent:true,
+      show:false,
+      webPreferences: { webSecurity: false,  nodeIntegration: true},
     })
-
-  })
 }
+
+
+
+
+
+
+
+
+// function spawnTimePicker2(parent, offset){
+//   const parentPos = parent.getPosition()
+//   console.log(parentPos, offset)
+//   let timePicker = new BrowserWindow({
+//     width: 300,
+//     height: 400,
+//     x: parentPos[0] + offset.x,
+//     y: parentPos[1] + offset.y,
+//     resizable:false,
+//     frame:false,
+//     transparent:true,
+//     parent: parent,
+//     show:false,
+//     webPreferences: { webSecurity: false,  nodeIntegration: true},
+//   })
+
+//   timePicker.loadURL(isDev ? 'http://localhost:3000/timepicker' : `file://${path.join(__dirname, '../build/index.html/timepicker')}`);
+
+//   timePicker.on('ready-to-show', ()=>{
+//     timePicker.show()
+//     // ASSIGN FOCUS EVENT HANDLER ON PARENT FOCUS
+//     parent.once('focus', ()=>{
+//       // START EXIT ANIMATION
+//       timePicker.webContents.send('start-exit-anim')
+//       parent.webContents.send('picker-is-closed')
+//       timePicker.on('ready-to-close', ()=>{
+//         timePicker.close()
+//         timePicker = null
+//       })
+
+//     })
+
+//   })
+// }
