@@ -1,5 +1,5 @@
 
-const {BrowserWindow} = require('electron');
+const {BrowserWindow, ipcMain: main} = require('electron');
 
 class ChildWindow{
     constructor(parent, url, options){
@@ -26,15 +26,11 @@ class PickerWindow extends ChildWindow{
             parent.webContents.executeJavaScript("document.getElementById('root').style = 'pointer-events:none; filter: brightness(50%);'");
 
             parent.once('focus', ()=>{
-              // START EXIT ANIMATION
-              this.window.webContents.send('start-exit-anim')
 
-              parent.webContents.executeJavaScript("document.getElementById('root').style = 'pointer-events:auto; filter: none;'");
+                parent.webContents.executeJavaScript("document.getElementById('root').style = 'pointer-events:auto; filter: none;'");
 
-              this.window.on('ready-to-close', ()=>{
                 this.window.close()
                 this.window = null
-              })
         
             })
           })

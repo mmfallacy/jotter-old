@@ -2,8 +2,6 @@ const { app, BrowserWindow , ipcMain, shell} = require('electron')
 
 const path = require('path');
 const isDev = require('electron-is-dev');
-const {SetBottomMost} = require('electron-bottom-most')
-
 const {PickerWindow} = require('./modules/ChildWindow')
 
 // DISABLE CACHE
@@ -30,9 +28,6 @@ function createWindow () {
 
   mainWindow.webContents.openDevTools({mode:'detach'})
 
-  let handle = mainWindow.getNativeWindowHandle();
-
-  SetBottomMost(handle)
 }
 
 app.whenReady().then(createWindow)
@@ -76,7 +71,6 @@ function spawnTimePicker(parent, offset){
       y: parentPos[1] + offset.y,
       resizable:false,
       frame:false,
-      transparent:true,
       show:false,
       webPreferences: { webSecurity: false,  nodeIntegration: true},
     })
