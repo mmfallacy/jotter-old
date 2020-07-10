@@ -14,19 +14,32 @@ import {Route, Switch} from 'react-router-dom';
 
 import {BrowserRouter as Router} from 'react-router-dom'
 
+import {TimePickerProvider} from './components/context/TimePickerContext';
+
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Switch>
-        <Route path="/timepicker" component={TimePicker} />
-        <Route exact path="/" component={App} />
-        <Route path="*" render={()=><h1>"ERROR"</h1>} />
-      </Switch>
-    </Router>
+    <Providers>
+      <Router>
+        <Switch>
+          <Route path="/timepicker" render={TimePicker} />
+          <Route exact path="/" component={App} />
+          <Route path="*" render={()=><h1>"ERROR"</h1>} />
+        </Switch>
+      </Router>
+    </Providers>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
+
+
+function Providers({children}){
+  return(
+    <TimePickerProvider>
+      {children}
+    </TimePickerProvider>
+  )
+}
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
