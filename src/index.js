@@ -9,19 +9,21 @@ import * as serviceWorker from './serviceWorker';
 
 import {Route, Switch} from 'react-router-dom';
 
+import {MuiPickersUtilsProvider} from '@material-ui/pickers'
+
+import MomentUtils from '@date-io/moment'
 
 // CHANGE TO HASHROUTER ON PRODUCTION
 
 import {BrowserRouter as Router} from 'react-router-dom'
 
-import {TimePickerProvider} from './components/context/TimePickerContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <Providers>
       <Router>
         <Switch>
-          <Route path="/timepicker" render={TimePicker} />
+          <Route path="/timepicker" component={TimePicker} />
           <Route exact path="/" component={App} />
           <Route path="*" render={()=><h1>"ERROR"</h1>} />
         </Switch>
@@ -35,9 +37,9 @@ ReactDOM.render(
 
 function Providers({children}){
   return(
-    <TimePickerProvider>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
       {children}
-    </TimePickerProvider>
+    </MuiPickersUtilsProvider>
   )
 }
 // If you want your app to work offline and load faster, you can change

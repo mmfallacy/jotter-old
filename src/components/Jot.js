@@ -14,8 +14,6 @@ import useInterval from '@use-it/interval'
 
 import {DATE_TEXT} from '../variables'
 
-import {ipcRenderer as main} from 'electron'
-
 export default function Jot(){
 
     const [taskArray, setTaskArray] = useState([

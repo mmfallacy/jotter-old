@@ -2,9 +2,10 @@ const { app, BrowserWindow , ipcMain, shell} = require('electron')
 
 const path = require('path');
 const isDev = require('electron-is-dev');
-const {SetBottomMost} = require('electron-bottom-most')
-
 const {PickerWindow} = require('./modules/ChildWindow')
+
+const {installElectronStateManager, createElectronState} = require('./modules/electronStateManager');
+const moment = require('moment');
 
 // DISABLE CACHE
 app.commandLine.appendSwitch ("disable-http-cache");
@@ -22,20 +23,24 @@ function createWindow () {
     transparent:true,
     minimizable:false,
     resizable:false, // DEPRECATED RESIZABILITY DUE TO RESIZING BUG
-    webPreferences: { webSecurity: false,  nodeIntegration: true},
+    webPreferences: { webSecurity: false,  nodeIntegration: true, enableRemoteModule: true},
   })
 
   // and load the index.html of the app.
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   mainWindow.webContents.openDevTools({mode:'detach'})
-
-  let handle = mainWindow.getNativeWindowHandle();
-
-  SetBottomMost(handle)
 }
 
-app.whenReady().then(createWindow)
+app.whenReady()
+  .then(createWindow)
+  .then(()=>{
+    installElectronStateManager();
+
+    createElectronState('time', moment().format('h:mm A'))
+
+
+  })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -71,14 +76,14 @@ function spawnTimePicker(parent, offset){
     isDev ? 'http://localhost:3000/timepicker' : `file://${path.join(__dirname, '../build/index.html/timepicker')}`,
     {
       width: 300,
-      height: 400,
+      height: 430,
       x: parentPos[0] + offset.x,
       y: parentPos[1] + offset.y,
       resizable:false,
       frame:false,
       transparent:true,
       show:false,
-      webPreferences: { webSecurity: false,  nodeIntegration: true},
+      webPreferences: { webSecurity: false,  nodeIntegration: true, enableRemoteModule: true},
     })
 }
 

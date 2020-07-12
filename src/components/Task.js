@@ -16,6 +16,7 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 import {ipcRenderer as main} from 'electron';
 
 import moment from 'moment';
+import { useElectronState } from '../hooks/useElectronState'
 
 
 export function TaskContainer({children}){
@@ -96,16 +97,17 @@ export function Task(props){
 
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
     const [name,setName] = useState("")
-    const [time,setTime] = useState(moment().format("h:mm A"))
+    const [time, setTime] = useElectronState('time')
+    
 
     const spawnTimePicker = (e)=>{
-        
+
         const viewportRect = document.body.getBoundingClientRect()
         const targetRect = e.target.getBoundingClientRect()
 
         const offset = {
-            x: Math.round(targetRect.left - viewportRect.left),
-            y: Math.round(targetRect.top - viewportRect.top + targetRect.height)
+            x: Math.round(targetRect.left - viewportRect.left - (120)),
+            y: Math.round(targetRect.top - viewportRect.top + targetRect.height + 5)
         }
         main.send('spawnPicker','time',offset)
     }
@@ -213,4 +215,5 @@ function EntryButton({confirm=()=>{},decline=()=>{}}){
         </button>
     )
 }
+
 
