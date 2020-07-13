@@ -1,3 +1,4 @@
+import fs from 'fs'
 
 export const DATE_TEXT = {
     MONTHS: [
@@ -15,13 +16,13 @@ export const DATE_TEXT = {
         "December"
     ],
     WEEKDAYS:[
+        "Sunday",
         "Monday",
         "Tuesday",
         "Wednesday",
         "Thursday",
         "Friday",
-        "Saturday",
-        "Sunday"
+        "Saturday"
     ],
     ORDINAL_DAYS: (day)=>{
         let ones = day % 10
@@ -39,3 +40,15 @@ export const DATE_TEXT = {
 }
 
 export const NAMESPACE = "48e48b76-13a9-416e-85f0-fc3f43394628"
+
+export const SASS_VARIABLES = {
+    orange: "#F7630C",
+    yellowOrange: "#FFB117",
+    darkGray: "#282727",
+    gray: "#454444",
+    pink: "#FF5151",
+    green: "rgb(137, 189, 34)",
+    red: "#FF0073",
+    lightGray: "rgba(white,.55)",
+    lightGraySolid: "rgba(white,.55)"
+}

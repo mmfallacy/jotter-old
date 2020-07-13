@@ -3,7 +3,7 @@
 .TimePicker{
     height:100%;
     width:100%;
-    background-color: white;
+    background-color: $darkGray;
     overflow: hidden;
 }
 
@@ -23,5 +23,7 @@
         font-size: 1rem;
         background: none;
         border: none;
+        color: $orange;
+        cursor: pointer;
     }
 }
