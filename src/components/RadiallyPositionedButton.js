@@ -2,15 +2,9 @@ import React, {useState, useRef} from 'react';
 import Classes from 'classnames'
 import Style from './styles/RadiallyPositionedButton.module.scss'
 
-import {TweenLite, Power3} from 'gsap'
+import {motion, AnimatePresence} from 'framer-motion'
 
-import {
-    Transition,
-    TransitionGroup,
-    CSSTransition
-} from 'react-transition-group';
-
-export function ButtonGroup({className, primary, children, duration, delay}){
+export function ButtonGroup({className, primary, children, duration}){
     const [primaryStatus, togglePrimaryStatus] = useState(false)
     
     const primaryRef = useRef(null)
@@ -24,6 +18,17 @@ export function ButtonGroup({className, primary, children, duration, delay}){
             togglePrimaryStatus(false)
     }
 
+    const DefaultVariant = {
+        transition: {delayChildren: .2, staggerChildren: .1}
+    }
+    const ContainerVariant = {
+        hidden: {
+            transition: {...DefaultVariant.transition, staggerDirection: -1}
+        },
+        show: {
+            transition: {...DefaultVariant.transition, staggerDirection: 1}
+        }
+    }
     return(
         <div className={Classes(Style.ButtonGroup,className)} onClick={disablePrimaryOnBlur}>
 
@@ -35,71 +40,53 @@ export function ButtonGroup({className, primary, children, duration, delay}){
                 {primary.content}
             </button>
 
-            <TransitionGroup component={null}>
-                {React.Children.map(children, (child,i)=> // pass props
-                    React.cloneElement(child, {
-                        visible: primaryStatus,
-                        duration: ( duration || undefined ),
-                        delay: ( delay || undefined ),
-                        indexes: [ i, children.length-i-1 ],
-                        
-                    })
-                )}
-            </TransitionGroup>
+            <motion.div
+                initial="hidden"
+                animate={primaryStatus? 'show' : 'hidden'}
+                variants={ContainerVariant} 
+                className={Style.SecondaryWrapper}
+            >{
+                React.Children.map(children, (child,i)=> // pass props
+                    React.cloneElement(child, {duration})
+                )
+            }</motion.div>
 
-            <CSSTransition
-                in={primaryStatus}
-                classNames={{
-                    enterActive:Style.enterActive,
-                    enterDone:Style.enterDone,
-                    exitDone:Style.exitDone,
-                    exit:Style.exitActive
-                }}
-                timeout={500}
-                mountOnEnter
-                unmountOnExit
-            >
-                <div className={Style.Overlay}></div>
-            </CSSTransition>
+
+            <AnimatePresence>
+                { primaryStatus &&
+                <motion.div 
+                    className={Style.Overlay}
+                    animate={{opacity:1}}
+                    initial={{opacity:0}}
+                    exit={{opacity:0}}
+                ></motion.div>}
+            </AnimatePresence>
         </div>
     )
 } 
 
-export const Secondary = ({onClick=()=>{},indexes, visible, duration=.4, angle=0, distance=50, delay=.5, children, className}) => {
+export const Secondary = ({onClick=()=>{}, angle, distance, duration, children, className}) => {
     
     const radians = angle * Math.PI/180
 
-    const aOnEnter = (el)=>{
-        TweenLite.to(el, duration, {
+    const Variant = {
+        hidden:{
+            x: 0,
+            y: 0
+        },
+        show:{
             x:(distance * Math.cos(radians)),
-            y:(distance * Math.sin(radians)),
-             delay: indexes[0] * delay
-        }, Power3.easeOut)
+            y:(distance * Math.sin(radians))
+        }
     }
-
-    const aOnExit = (el)=>{
-        TweenLite.to(el, duration, {
-            x:0,
-            y:0,
-             delay: indexes[0] * delay
-        }, Power3.easeIn)
-
-    }
-
     return (
-        <Transition 
-            key={indexes[0]}
-            in={visible}
-            onEnter={aOnEnter}
-            onExit={aOnExit}
-            timeout={{
-                enter:((duration + indexes[0] * delay) * 1000), 
-                exit:((duration + .2 + indexes[1] * delay) * 1000) // add 200ms to wait for animation to end
-            }}
-            mountOnEnter
-            unmountOnExit
+        <motion.button
+            variants={Variant}
+            onClick={()=>onClick()} 
+            className={Classes(Style.Secondary, className)}
+            transition={{ease:'easeOut', duration}}
         >
-            <button onClick={()=>onClick()} className={Classes(Style.Secondary, className)}>{children}</button>
-        </Transition>
+            {children}
+        </motion.button>
     )
 }
