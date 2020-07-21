@@ -89,7 +89,7 @@
 
 .Delete{
     @extend %TaskButton;
-    background: none;
+    background-color: transparent;
     border:1px solid $orange;
     position: absolute;
     top:0;

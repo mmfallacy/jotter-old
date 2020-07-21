@@ -8,16 +8,12 @@ import {ReactComponent as Tick} from './assets/Task/tick.svg'
 import {ReactComponent as Minus} from './assets/Task/minus.svg'
 import {ReactComponent as Link} from './assets/Task/link.svg'
 
-import {CSSTransition} from 'react-transition-group'
-
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 
 import {ipcRenderer as main} from 'electron';
 
-import moment from 'moment';
-import { useElectronState } from '../hooks/useElectronState'
-
+import {CSSTransition} from 'react-transition-group'
 
 export function TaskContainer({children}){
 
@@ -95,68 +91,6 @@ export function Task(props){
     )
 }
 
-export function Entry({variant, save=()=>{}, discard=()=>{}}){
-    const [name,setName] = useState("")
-    const [time, setTime] = useElectronState('time')
-    
-
-    const spawnTimePicker = (e)=>{
-
-        const viewportRect = document.body.getBoundingClientRect()
-        const targetRect = e.target.getBoundingClientRect()
-
-        const offset = {
-            x: Math.round(targetRect.left - viewportRect.left - (120)),
-            y: Math.round(targetRect.top - viewportRect.top + targetRect.height + 5)
-        }
-        main.send('spawnPicker','time',offset)
-    }
-
-    return(
-        <div 
-            className={Classes(
-                Style.Entry,
-                variant==='linked' && Style.Linked,
-                variant==='note' && Style.Note,
-            )}
-        >
-            <span className={Style.LeftColor}></span>
-
-            <div className={Style.ButtonContainer}>
-                <EntryButton confirm={save} decline={discard}/>
-            </div>
-                
-                
-            <input 
-                type="text"
-                className={Classes(Style.TaskName, Style.TaskNameWrapper)} 
-                placeholder="Enter Task Title..."
-                value={name}
-                onChange={(e)=>setName(e.target.value)}
-            >
-            </input>
-            
-            {  variant==='linked' &&
-                <button
-                    className={Classes(
-                        Style.Link
-                    )}
-                >
-                    <Link />
-                </button>
-            }
-            { variant!=='note' &&
-                <button 
-                    className={Style.TaskTime}
-                    onClick={spawnTimePicker}
-                >
-                    {time}
-                    <span className={Style.TaskTimeSet}> SET </span>
-                </button>
-                }
-        </div>
-    )
-}
 
 function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
 
@@ -167,11 +101,13 @@ function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
 
     return(
         <button 
+            key="check"
             className={Classes(
                 Style.Checkbox,
                 state && Style.active
             )}
-            onClick={onClickWrapper} disabled={disabled}>
+            onClick={onClickWrapper} disabled={disabled}
+        >
             { 
             (state)
                 ? <Tick />
@@ -182,7 +118,6 @@ function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
 }
 
 function Delete({onClick, inProp}){
-
     return(
         <CSSTransition
             in={inProp}
@@ -205,15 +140,5 @@ function Delete({onClick, inProp}){
                     <Minus />
             </button>
         </CSSTransition>
-    )
+    )   
 }
-
-function EntryButton({confirm=()=>{},decline=()=>{}}){
-    return(
-        <button className={Classes(Style.EntryButton,'ignore-scrolling')}>
-            <Tick />
-        </button>
-    )
-}
-
-

@@ -6,7 +6,8 @@ import {ReactComponent as Add} from './assets/Jot/add.svg'
 
 import {ButtonGroup, Secondary} from './RadiallyPositionedButton';
 
-import {TaskContainer, Task, Entry} from './Task';
+import {TaskContainer, Task} from './Task';
+import {Entry} from './TaskEntry';
 
 import moment from "moment";
 

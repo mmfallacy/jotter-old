@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 export const DATE_TEXT = {
     MONTHS: [
         "January",
