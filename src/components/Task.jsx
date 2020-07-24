@@ -5,7 +5,6 @@ import Classes from 'classnames'
 import Style from './styles/Task.module.scss'
 
 import {ReactComponent as Tick} from './assets/Task/tick.svg'
-import {ReactComponent as Minus} from './assets/Task/minus.svg'
 import {ReactComponent as Link} from './assets/Task/link.svg'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
@@ -14,6 +13,9 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 import {ipcRenderer as main} from 'electron';
 
 import {CSSTransition} from 'react-transition-group'
+
+import {motion, AnimatePresence} from 'framer-motion';
+import {SASS_VARIABLES as COLORS} from '../variables'
 
 export function TaskContainer({children}){
 
@@ -58,8 +60,12 @@ export function Task(props){
             <span className={Style.LeftColor}></span>
             
             <div className={Style.ButtonContainer}>
-                <Checkbox state={isTicked} stateUpdate={toggleTick}/>
-                <Delete inProp={isActive} />
+                <AnimatePresence exitBeforeEnter>
+                    { isActive
+                        ? <Delete state={isTicked} />
+                        : <Checkbox state={isTicked} stateUpdate={toggleTick}/>
+                    }   
+                </AnimatePresence>
             </div>
             
             <div className={Style.TaskNameWrapper}>
@@ -104,7 +110,7 @@ function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
             key="check"
             className={Classes(
                 Style.Checkbox,
-                state && Style.active
+                state && Style. active
             )}
             onClick={onClickWrapper} disabled={disabled}
         >
@@ -117,28 +123,73 @@ function Checkbox({state,stateUpdate=()=>{},onCheck=()=>{},disabled=false}){
     )
 }
 
-function Delete({onClick, inProp}){
+function Delete({onClick, state}){
+    const Variants={
+        show:{
+            borderColor: COLORS.pink,
+            backgroundColor: COLORS.pink,
+            transition:{
+                duration: .2,
+                delay: .3,
+                ease: 'easeOut',
+                when: 'beforeChildren'
+            }
+        },
+        hidden:{
+            borderColor: COLORS.orange,
+            backgroundColor: state ? COLORS.orange :'rgba(0,0,0,0)',
+            transition:{
+                duration: .2,
+                ease: 'easeIn',
+                when: 'afterChildren'
+            }
+        }
+    }
     return(
-        <CSSTransition
-            in={inProp}
-            classNames={{
-                enterActive:Style.enterActive,
-                enterDone:Style.enterDone,
-                exitDone:Style.exitDone,
-                exit:Style.exitActive
-            }}
-            timeout={800}
-            mountOnEnter
-            unmountOnExit
+        <motion.button 
+            key="delete"
+            variants={Variants}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className={Classes(
+                Style.Delete,
+            )}
+            onClick={onClick}
         >
-            <button 
-                className={Classes(
-                    Style.Delete,
-                )}
-                onClick={onClick}
-            >
-                    <Minus />
-            </button>
-        </CSSTransition>
+            <Minus />
+        </motion.button>
     )   
+}
+
+
+const Minus = ()=>{
+    
+    const IconVariants={
+        hidden:{
+            opacity: 0,
+            transition:{
+                duration: .2,
+                ease: 'easeIn',
+                delay: .3
+            }
+        },
+        show:{
+            opacity: 1,
+            transition:{
+                duration: .2,
+                ease: 'easeOut',
+            }
+        },
+    }
+    return(
+        <motion.svg 
+            variants={IconVariants}
+            xmlns="http://www.w3.org/2000/svg" 
+            width="15.809" height="11.009" 
+            viewBox="0 0 15.809 11.009"
+        >
+            <path fill="none" stroke="rgb(255,255,255)" strokeLinecap="round" strokeLinejoin="miter" strokeWidth="2" d="M11.1046301 5.5046301h-6.4"/>
+        </motion.svg>
+    )
 }
