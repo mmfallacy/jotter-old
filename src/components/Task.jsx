@@ -20,9 +20,13 @@ import {SASS_VARIABLES as COLORS} from '../variables'
 export function TaskContainer({children}){
 
     return(
-        <ScrollContainer ignoreElements="button, input, .ignore-scrolling" className={Style.TaskContainer}>
+        <div
+            ignoreElements="button, input, .ignore-scrolling" 
+            className={Style.TaskContainer}
+            horizontal={false}
+        >
             {children}
-        </ScrollContainer>
+        </div>
     )
 }
 

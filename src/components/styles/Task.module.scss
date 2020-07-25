@@ -4,11 +4,13 @@
 .TaskContainer{
     width:100%;
     height: calc(100% - 12px - 83px);
+    overflow-x: hidden;
     overflow-y: auto;
     margin-top: 25px;
     &::-webkit-scrollbar {
         width: 0px;
     }
+
 }
 
 

@@ -17,7 +17,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "electron-is-dev": "^1.2.0",
-    "framer-motion": "^2.1.0",
+    "framer-motion": "1.11.1",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
