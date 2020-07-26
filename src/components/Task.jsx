@@ -12,8 +12,6 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 import {ipcRenderer as main} from 'electron';
 
-import {CSSTransition} from 'react-transition-group'
-
 import {motion, AnimatePresence} from 'framer-motion';
 import {SASS_VARIABLES as COLORS} from '../variables'
 

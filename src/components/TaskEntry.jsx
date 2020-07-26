@@ -12,11 +12,35 @@ import {ipcRenderer as main} from 'electron';
 
 import { useElectronState } from '../hooks/useElectronState'
 
-import {motion, useMotionValue} from 'framer-motion'
+import {motion, useAnimation} from 'framer-motion'
+
+import {useDrag} from 'react-use-gesture'
 
 export function Entry({variant, save=()=>{}, discard=()=>{}}){
     const [name,setName] = useState("")
-    const [time, setTime] = useElectronState('time')
+    const time = useElectronState('time')[0]
+
+    const bindAnimation = useAnimation({
+        x: 0,
+        transition:{
+            type: "spring",
+            stiffness: 1,
+        }
+    })
+
+    const bindDrag = useDrag( ({dragging, movement: [x,y], cancel }) => {
+        const X_LIMIT = 50
+        if (x > X_LIMIT){
+            bindAnimation.start({x: X_LIMIT})
+            cancel()
+        }
+        else if(dragging) {
+            if(x < 0) cancel()
+            bindAnimation.start({x})
+        }
+        else
+            bindAnimation.start({x:0})
+    })
 
     const spawnTimePicker = (e)=>{
 
@@ -30,31 +54,15 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
         main.send('spawnPicker','time',offset)
     }
     return(
+        <div className={Style.Wrapper}>
         <motion.div 
             className={Classes(
                 Style.Entry,
                 variant==='linked' && Style.Linked,
                 variant==='note' && Style.Note,
             )}
-            layout
-            drag="x"
-            dragConstraints={{left:0, right:70}}
-            dragElastic={0}
-            dragMomentum={true}
-            dragTransition={{
-                type:'spring',
-                mass: 5,
-                min: 0,
-                max: 70,
-                power: 0.1
-            }}
-            onDrag={(e,info)=>{
-                console.log(info.point.x)
-            }}
-            onDragEnd={(e, info) => {
-                if(info.point.x >= 70) discard()
-            }}
-            dragDirectionLock
+            {...bindDrag()}
+            animate = {bindAnimation}
         >
             <span className={Style.LeftColor}></span>
 
@@ -91,6 +99,7 @@ export function Entry({variant, save=()=>{}, discard=()=>{}}){
                 </button>
                 }
         </motion.div>
+        </div>
     )
 }
 

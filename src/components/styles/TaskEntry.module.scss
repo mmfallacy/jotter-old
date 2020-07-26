@@ -1,9 +1,16 @@
 @import '../../variables.scss/';
 @import 'Task.module.scss';
-
+.Wrapper{
+    height:auto;
+    width:auto;
+    background: linear-gradient(to right,
+        rgba(243, 66, 66,.5),
+        $darkGray 90%
+    );
+}
 .Entry {
     @extend .Task;
-
+    background-color: $darkGray;
     .Checkbox{
         border-color: rgba(white,.4);
     }
